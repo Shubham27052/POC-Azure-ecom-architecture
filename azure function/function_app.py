@@ -17,9 +17,8 @@ def http_trigger(req:func.HttpRequest) -> func.HttpResponse:
 
     response = func.HttpResponse(
         headers={
-        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods":"OPTIONS,PUT,POST"
+        "Access-Control-Allow-Methods":"*"
         },
         status_code=200,  # Set status code to Created
         body=response_body,
@@ -29,7 +28,7 @@ def http_trigger(req:func.HttpRequest) -> func.HttpResponse:
  
     return response
 
-
+ # "Content-Type": "application/json",
 
 
 

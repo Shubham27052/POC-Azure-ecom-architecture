@@ -12,7 +12,9 @@ body {
     width:100%;
     height:100%;
     position:fixed;
-    background-color:rgb(42, 166, 255,0.9)
+    /* background-color:rgb(42, 166, 255,0.9) */
+    background-color:rgba(167, 3, 192, 0.9)
+
 }
 
 #final-message{
