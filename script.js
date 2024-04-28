@@ -32,7 +32,7 @@
     })
       
       .then((response) => {
-          if (response.status_code === 200) {
+          if (response.status === 200) {
             document.getElementById("final-message").style.display = "block";
             document.getElementById("form").style.display = "none";
             document.getElementById("final-message-h3").innerHTML = "Form filled successfully";
