@@ -17,11 +17,13 @@ def http_trigger(req:func.HttpRequest) -> func.HttpResponse:
 
     response = func.HttpResponse(
         headers={
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods":"*"
+        "Access-Control-Allow-Origin": "https://nice-meadow-010225a00.5.azurestaticapps.net/",
+        "Vary": "Origin",
+        "Access-Control-Allow-Methods":"*",
+        "Content-Type": "application/json"
         },
         status_code=200,  # Set status code to Created
-        body=response_body,
+        body=response_body
     )
 
     logging.info(response.get_body())
