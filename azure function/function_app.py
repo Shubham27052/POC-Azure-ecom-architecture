@@ -7,14 +7,16 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 @app.route(route="http_trigger")
 def http_trigger(req:func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger processed a request')
 
+    # Logging
+    logging.info('Python HTTP trigger processed a request')
     logging.info(req.get_json())
 
-    response_body =  json.dumps({
-        "message":"success"
-    })
+    # writing data to the NOSQL DB
+    # refer: https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-cosmos-db-vs-code?pivots=programming-language-python
 
+
+    # Response for the frontend
     response = func.HttpResponse(
         headers={
         "Access-Control-Allow-Origin": "https://nice-meadow-010225a00.5.azurestaticapps.net/",
@@ -23,14 +25,27 @@ def http_trigger(req:func.HttpRequest) -> func.HttpResponse:
         "Content-Type": "application/json"
         },
         status_code=200,  # Set status code to Created
-        body=response_body
+        body= json.dumps({
+        "message":"success"
+        })
     )
 
-    logging.info(response.get_body())
- 
     return response
 
- # "Content-Type": "application/json",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
