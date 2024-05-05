@@ -50,14 +50,23 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     message = req_body.get("message")
 
     # Getting the file
-    file = req.files.get("file")
-    if not file:
+    req_body = req.get_body()
+    form_data = req_body.decode('utf-8').split('&')
+
+    for item in form_data:
+        key, value = item.split('=')
+        if key == 'file':
+            file_data = value
+    if not file_data:
         return func.HttpResponse(
             "No file uploaded",
             status_code=400
         )
     
-    container_client.upload_blob(name="bro", data=file, blob_type=BlobType.BLOCKBLOB, metadata={"source": name})
+    file_bytes = bytes(file_data, 'utf-8')
+    
+    # upload data to container
+    container_client.upload_blob(name="bro", data=file_bytes, blob_type=BlobType.BLOCKBLOB, metadata={"source": name})
 
     # Validate data (optional)
     if not name or not email or not message:

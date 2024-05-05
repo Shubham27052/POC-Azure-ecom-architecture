@@ -23,7 +23,7 @@
       name: nameInput.value,
       email: email.value,
       message: message.value,
-      file: formData.get("uploadedfile")
+      file: formData
     };
 
     console.log(request_body)
