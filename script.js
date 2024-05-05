@@ -23,14 +23,14 @@
       console.log(event.target.result);
     };
   
-    reader.readAsArrayBuffer(file);
+    reader.readAsText(file);
 
     //defining the request body
     var request_body = {
       name: nameInput.value,
       email: email.value,
       message: message.value,
-      file: formData.main_file
+      // file: formData.main_file
     };
 
     console.log(request_body)
