@@ -12,13 +12,18 @@
     //preventing default submit
     event.preventDefault();
 
-    console.log(file.value)
+    file= event.target.file.files[0]
+
+    let formData = new FormData()
+    formData.append('file', file)
+
 
     //defining the request body
     var request_body = {
       name: nameInput.value,
       email: email.value,
       message: message.value,
+      file: formData
 
     };
 

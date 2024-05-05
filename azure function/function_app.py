@@ -1,74 +1,75 @@
 import azure.functions as func
 import json
 import logging
+import uuid
+from azure.cosmos import CosmosClient
+
+# Replace with your Cosmos DB connection string
+CONNECTION_STRING = "AccountEndpoint=https://poc-ecommerce-cosmosnosql.documents.azure.com:443/;AccountKey=C8p006b5sOrrI4M8bALTwyPV3mEP3e4TX5mfpqpoHC2qxo6xjJpFPmhFUYgwgbRDrkTPIUJYRuGKACDbqhoR5w=="
+
+cosmos_client = CosmosClient.from_connection_string(CONNECTION_STRING)
+database = cosmos_client.get_database_client("database")
+container = database.get_container_client("userdata")
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-
 @app.route(route="http_trigger")
-def http_trigger(req:func.HttpRequest) -> func.HttpResponse:
+# @app.cosmos_db_output(arg_name="outputDocument", database_name="database",container_name="userdata", connection="CosmosDbConnectionSetting")
+
+def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
 
     # Logging
     logging.info('Python HTTP trigger processed a request')
-    logging.info(req.get_json())
 
-    # writing data to the NOSQL DB
-    # refer: https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-cosmos-db-vs-code?pivots=programming-language-python
+    # Get request body
+    try:
+        req_body = req.get_json()
+    except ValueError:
+        logging.warning("Invalid JSON data in request")
+        return func.HttpResponse(
+            "Error: Invalid JSON data in request body",
+            status_code=401
+        )
+
+    # Extract data from request body
+    name = req_body.get("name")
+    email = req_body.get("email")
+    message = req_body.get("message")
+
+    # Validate data (optional)
+    if not name or not email or not message:
+        logging.warning("Missing required fields in request body")
+        return func.HttpResponse(
+            "Error: Missing required fields in request body",
+            status_code=402
+        )
+
+    # Create document for Cosmos DB
+    new_document = {
+        "id": str(uuid.uuid4()),  # Generate unique ID
+        "name": name,
+        "email": email,
+        "message": message,
+    }
+
+    logging.info(new_document)
+    logging.info(type(new_document))
 
 
-    # Response for the frontend
-    response = func.HttpResponse(
-        headers={
-        "Access-Control-Allow-Origin": "https://nice-meadow-010225a00.5.azurestaticapps.net/",
-        "Vary": "Origin",
-        "Access-Control-Allow-Methods":"*",
-        "Content-Type": "application/json"
-        },
-        status_code=200,  # Set status code to Created
-        body= json.dumps({
-        "message":"success"
-        })
+    ## Write data to Cosmos DB
+    try:
+        container.create_item(new_document)
+    except json.JSONDecodeError as e:
+        logging.warning("Could not write data to CosmosDB")
+        return func.HttpResponse(
+            e,
+            status_code=403
+        )
+
+
+    # # Success response
+    # logging.info(f"Data written to Cosmos DB: {new_document}")
+    return func.HttpResponse(
+        "Data successfully stored in Cosmos DB",
+        status_code=200
     )
-
-    return response
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @app.route(route="http_trigger")
-# def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
-#     logging.info('Python HTTP trigger function processed a request.')
-
-#     name = req.params.get('name')
-#     if not name:
-#         try:
-#             req_body = req.get_json()
-#         except ValueError:
-#             pass
-#         else:
-#             name = req_body.get('name')
-
-#     if name:
-#         return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-#     else:
-#         return func.HttpResponse(
-#              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-#              status_code=200
-#         )
-    
-   
