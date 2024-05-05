@@ -1,7 +1,7 @@
   const nameInput = document.querySelector("#name");
   const email = document.querySelector("#email");
   const message = document.querySelector("#message");
-  const main_file = document.getElementById("file")
+  const file = document.getElementById("file")
   const form = document.querySelector("#form");
 
 
@@ -12,25 +12,19 @@
     //preventing default submit
     event.preventDefault();
 
-    // let formData = new FormData()
-    // formData.append('main_file', main_file.files[0])
+    // getting the input file
+    const uploadedfile = file.files[0]
+    const formData = new FormData()
+    formData.append('uploadedFile', uploadedfile)
 
-    const file = main_file.files[0]
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      console.log(event.target.result);
-    };
   
-    reader.readAsText(file);
 
     //defining the request body
     var request_body = {
       name: nameInput.value,
       email: email.value,
       message: message.value,
-      // file: formData.main_file
+      formData
     };
 
     console.log(request_body)
