@@ -15,7 +15,7 @@
     let main_file= event.target.file.files[0]
 
     let formData = new FormData()
-    formData.append('file', main_file)
+    formData.append('main_file', main_file)
 
 
     //defining the request body
@@ -23,9 +23,11 @@
       name: nameInput.value,
       email: email.value,
       message: message.value,
-      file: formData
+      file: formData.main_file
 
     };
+
+    console.log(request_body)
 
     //fetching the request
     fetch(url, {
