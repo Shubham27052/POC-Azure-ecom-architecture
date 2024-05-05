@@ -3,10 +3,9 @@ import json
 import logging
 import uuid
 from azure.cosmos import CosmosClient
-from keys import CONNECTION_STRING
+from .keys import CONNECTION_STRING
 
 # Replace with your Cosmos DB connection string
-
 cosmos_client = CosmosClient.from_connection_string(CONNECTION_STRING)
 database = cosmos_client.get_database_client("database")
 container = database.get_container_client("userdata")
