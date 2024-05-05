@@ -12,13 +12,18 @@
     //preventing default submit
     event.preventDefault();
 
-    console.log(main_file.files)
+    // let formData = new FormData()
+    // formData.append('main_file', main_file.files[0])
 
-    let formData = new FormData()
-    formData.append('main_file', main_file.files[0])
+    const file = main_file.files[0]
 
-    console.log(formData.main_file)
+    const reader = new FileReader();
 
+    reader.onload = function (e) {
+      console.log(event.target.result);
+    };
+  
+    reader.readAsArrayBuffer(file);
 
     //defining the request body
     var request_body = {
@@ -26,7 +31,6 @@
       email: email.value,
       message: message.value,
       file: formData.main_file
-
     };
 
     console.log(request_body)
