@@ -14,7 +14,6 @@
 
     console.log(main_file.files)
 
-
     let formData = new FormData()
     formData.append('main_file', main_file.files[0])
 
