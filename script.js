@@ -17,6 +17,8 @@
     let formData = new FormData()
     formData.append('main_file', main_file)
 
+    console.log(formData.main_file)
+
 
     //defining the request body
     var request_body = {

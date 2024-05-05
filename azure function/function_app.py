@@ -1,14 +1,28 @@
+from datetime import datetime, timedelta
 import azure.functions as func
 import json
 import logging
 import uuid
 from azure.cosmos import CosmosClient
-from .keys import CONNECTION_STRING
+from azure.storage.blob import BlobServiceClient, generate_account_sas, ResourceTypes, AccountSasPermissions, BlobType
+from keys import CONNECTION_STRING
 
-# Replace with your Cosmos DB connection string
+# Connecting with the CosmosDB database
 cosmos_client = CosmosClient.from_connection_string(CONNECTION_STRING)
 database = cosmos_client.get_database_client("database")
 container = database.get_container_client("userdata")
+
+# Connection to the Blob Storage
+sas_token = generate_account_sas(
+    account_name="pocecommstorageaccount",
+    account_key="key1",
+    resource_types=ResourceTypes(service=True),
+    permission=AccountSasPermissions(read=True, write=True,delete=True, add=True, create=True,list=True),
+    expiry=datetime.now() + timedelta(days=10)
+)
+
+blob_service_client = BlobServiceClient(account_url="https://pocecommstorageaccount.blob.core.windows.net/uploadedfiles", credential=sas_token)
+container_client = blob_service_client.get_container_client(container="uploadedfiles")
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -34,6 +48,16 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     name = req_body.get("name")
     email = req_body.get("email")
     message = req_body.get("message")
+
+    # Getting the file
+    file = req.files.get("file")
+    if not file:
+        return func.HttpResponse(
+            "No file uploaded",
+            status_code=400
+        )
+    
+    container_client.upload_blob(name="bro", data=file, blob_type=BlobType.BLOCKBLOB, metadata={"source": name})
 
     # Validate data (optional)
     if not name or not email or not message:
