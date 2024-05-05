@@ -1,7 +1,7 @@
   const nameInput = document.querySelector("#name");
   const email = document.querySelector("#email");
   const message = document.querySelector("#message");
-  const main_file = document.querySelector("#file")
+  const main_file = document.getElementById("file")
   const form = document.querySelector("#form");
 
 
