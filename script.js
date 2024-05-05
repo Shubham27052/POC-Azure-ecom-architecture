@@ -15,17 +15,15 @@
     // getting the input file
     const uploadedfile = file.files[0]
     const formData = new FormData()
-    formData.append('uploadedFile', uploadedfile)
-    console.log(formData.values())
-
-  
+    formData.append('uploadedfile', uploadedfile)
+    console.log(formData.get("uploadedfile"))
 
     //defining the request body
     var request_body = {
       name: nameInput.value,
       email: email.value,
       message: message.value,
-      formData
+      file: formData.get("uploadedfile")
     };
 
     console.log(request_body)
