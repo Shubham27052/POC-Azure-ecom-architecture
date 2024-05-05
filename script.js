@@ -12,7 +12,7 @@
     //preventing default submit
     event.preventDefault();
 
-    let main_file= event.target.file.files[0]
+    let main_file= event.target.uploadfile.files[0]
 
     let formData = new FormData()
     formData.append('main_file', main_file)
