@@ -3,9 +3,9 @@ import json
 import logging
 import uuid
 from azure.cosmos import CosmosClient
+from keys import CONNECTION_STRING
 
 # Replace with your Cosmos DB connection string
-CONNECTION_STRING = "AccountEndpoint=https://poc-ecommerce-cosmosnosql.documents.azure.com:443/;AccountKey=C8p006b5sOrrI4M8bALTwyPV3mEP3e4TX5mfpqpoHC2qxo6xjJpFPmhFUYgwgbRDrkTPIUJYRuGKACDbqhoR5w=="
 
 cosmos_client = CosmosClient.from_connection_string(CONNECTION_STRING)
 database = cosmos_client.get_database_client("database")

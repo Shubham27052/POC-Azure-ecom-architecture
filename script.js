@@ -12,10 +12,10 @@
     //preventing default submit
     event.preventDefault();
 
-    file= event.target.file.files[0]
+    let main_file= event.target.file.files[0]
 
     let formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', main_file)
 
 
     //defining the request body
