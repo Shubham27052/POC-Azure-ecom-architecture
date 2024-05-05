@@ -16,6 +16,7 @@
     const uploadedfile = file.files[0]
     const formData = new FormData()
     formData.append('uploadedFile', uploadedfile)
+    console.log(formData.values())
 
   
 
