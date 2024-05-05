@@ -13,28 +13,27 @@
     event.preventDefault();
 
     // getting the input file
-    const uploadedfile = file.files[0]
-    const formData = new FormData()
-    formData.append('uploadedfile', uploadedfile)
-    console.log(formData.get("uploadedfile"))
+    // const uploadedfile = file.files[0]
+    const formData = new FormData(form)
+    
 
     //defining the request body
-    var request_body = {
-      name: nameInput.value,
-      email: email.value,
-      message: message.value,
-      file: formData.get("uploadedfile")
-    };
+    // var request_body = {
+    //   name: nameInput.value,
+    //   email: email.value,
+    //   message: message.value,
+    //   file: formData.get("uploadedfile")
+    // };
 
-    console.log(request_body)
+    // console.log(request_body)
 
     //fetching the request
     fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify(request_body),
+      body: formData,
     })
       
       .then((response) => {
