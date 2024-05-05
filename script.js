@@ -1,7 +1,7 @@
   const nameInput = document.querySelector("#name");
   const email = document.querySelector("#email");
   const message = document.querySelector("#message");
-  const file = document.querySelector("#file")
+  const main_file = document.querySelector("#file")
   const form = document.querySelector("#form");
 
 
@@ -12,10 +12,11 @@
     //preventing default submit
     event.preventDefault();
 
-    let main_file= file.files[0]
+    console.log(main_file.files)
+
 
     let formData = new FormData()
-    formData.append('main_file', main_file)
+    formData.append('main_file', main_file.files[0])
 
     console.log(formData.main_file)
 
